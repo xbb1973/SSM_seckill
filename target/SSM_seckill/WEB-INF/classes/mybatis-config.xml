@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--mybatis主配置文件-->
+<configuration>
+    <!--配置全局属性-->
+    <settings>
+        <!--使用jdbc的getGeneratekeys获取自增主键值-->
+        <setting name="useGeneratedKeys" value="true"/>
+        <!--使用列别名替换列名　　默认值为true
+        select name as title(实体中的属性名是title) form table;
+        开启后mybatis会自动帮我们把表中name的值赋到对应实体的title属性中
+        -->
+        <setting name="useColumnLabel" value="true"/>
+
+        <!--开启驼峰命名转换Table:create_time到 Entity(createTime)-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql:///department?useSSL=false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+<!--    指定映射配置文件，映射配置文件指的是每个dao独立的配置文件
+        如果使用注解来配置，此处应该使用class属性指定被注解的dao全限定类名
+        -->
+    <mappers>
+        <mapper resource="xbb/seckill/dao/ISeckillDao.xml"/>
+        <mapper resource="xbb/seckill/dao/ISuccessKilledDao.xml"/>
+    </mappers>
+</configuration>
