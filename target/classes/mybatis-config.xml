@@ -33,8 +33,8 @@
 <!--    指定映射配置文件，映射配置文件指的是每个dao独立的配置文件
         如果使用注解来配置，此处应该使用class属性指定被注解的dao全限定类名
         -->
-    <mappers>
-        <mapper resource="xbb/seckill/dao/ISeckillDao.xml"/>
-        <mapper resource="xbb/seckill/dao/ISuccessKilledDao.xml"/>
-    </mappers>
+<!--    <mappers>-->
+<!--        <mapper resource="xbb/seckill/dao/ISeckillDao.xml"/>-->
+<!--        <mapper resource="xbb/seckill/dao/ISuccessKilledDao.xml"/>-->
+<!--    </mappers>-->
 </configuration>

@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ import java.util.List;
  * @modified By：
  * @version: v0.1$
  */
-@Controller
+@Component
 @RequestMapping("/seckill") //url:模块/资源/{}/细分
 public class SeckillController {
 
@@ -36,7 +37,7 @@ public class SeckillController {
     @Autowired
     private ISeckillService seckillService;
 
-    @RequestMapping(name = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model) {
         //获取列表页
         List<Seckill> seckillList = seckillService.getSeckillList();
@@ -61,6 +62,7 @@ public class SeckillController {
 
     //ajax json
     @RequestMapping(value = "/{seckillId}/exposer", method = RequestMethod.POST)
+    @ResponseBody
     public SeckillResult<Exposer> exposer(long seckillId) {
         SeckillResult<Exposer> seckillResult;
         try {
@@ -74,7 +76,8 @@ public class SeckillController {
     }
 
     @RequestMapping(value = "/{seckillId}/md5/seckillExecution",
-            method = RequestMethod.POST, produces = {"application.json;charset=UTF-8" })
+            method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8" })
     @ResponseBody
     public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId, //这里必须为Long而不是long，Long才能判断是否空指针，具体再看看差异
                                                    // 该值从浏览器的请求的request header 中的cokiee中获取，因此使用cookievalue
