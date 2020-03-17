@@ -63,7 +63,7 @@ public class SeckillController {
     //ajax json
     @RequestMapping(value = "/{seckillId}/exposer", method = RequestMethod.POST)
     @ResponseBody
-    public SeckillResult<Exposer> exposer(long seckillId) {
+    public SeckillResult<Exposer> exposer(@PathVariable long seckillId) {
         SeckillResult<Exposer> seckillResult;
         try {
             Exposer exposer = seckillService.exportSeckillUrl(seckillId);
@@ -75,15 +75,15 @@ public class SeckillController {
         return seckillResult;
     }
 
-    @RequestMapping(value = "/{seckillId}/md5/seckillExecution",
+    @RequestMapping(value = "/{seckillId}/{md5}/execution",
             method = RequestMethod.POST,
             produces = {"application/json;charset=UTF-8" })
     @ResponseBody
     public SeckillResult<SeckillExecution> execute(@PathVariable("seckillId") Long seckillId, //这里必须为Long而不是long，Long才能判断是否空指针，具体再看看差异
+                                                   @PathVariable("md5") String md5,
                                                    // 该值从浏览器的请求的request header 中的cokiee中获取，因此使用cookievalue
                                                    // 默认如果没有该cookie则springMVC会返回错误，required=false则表示此参数不是必须的
-                                                   @CookieValue(value = "killPhone", required = false) Long phone,
-                                                   @PathVariable("md5") String md5) {
+                                                   @CookieValue(value = "userPhone", required = false) Long phone) {
         // 验证数量多可以采用springMVC valid
         if (phone == null) {
             return new SeckillResult<SeckillExecution>(false, "未注册");
@@ -93,19 +93,20 @@ public class SeckillController {
             return new SeckillResult<SeckillExecution>(true, seckillExecution);
         } catch (RepeatKillException e1) {
             SeckillExecution seckillExecution = new SeckillExecution(seckillId, SeckillStateEnum.REPEAT_KILL);
-            return new SeckillResult<SeckillExecution>(false, seckillExecution);
+            return new SeckillResult<SeckillExecution>(true, seckillExecution);
         } catch (SeckillCloseException e2) {
             SeckillExecution seckillExecution = new SeckillExecution(seckillId, SeckillStateEnum.END);
-            return new SeckillResult<SeckillExecution>(false, seckillExecution);
+            return new SeckillResult<SeckillExecution>(true, seckillExecution);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             SeckillExecution seckillExecution = new SeckillExecution(seckillId, SeckillStateEnum.INNER_ERROR);
-            return new SeckillResult<SeckillExecution>(false, seckillExecution);
+            return new SeckillResult<SeckillExecution>(true, seckillExecution);
         }
     }
 
     //获取系统时间
     @RequestMapping(value = "/time/now", method = RequestMethod.GET)
+    @ResponseBody //把相应数据封装成json
     public SeckillResult<Long> time() {
         Date now = new Date();
         return new SeckillResult<Long>(true, now.getTime());
