@@ -63,12 +63,29 @@ public class ISeckillServiceTest {
 
     @Test
     public void executeSeckill() {
-        long seckillId = 1000;
+        long seckillId = 1007;
         long phone = Util.getPhoneNum();
         Exposer exposer = seckillService.exportSeckillUrl(seckillId);
         if (exposer.isExposed()){
             try {
                 SeckillExecution seckillExecution = seckillService.executeSeckill(seckillId, phone, exposer.getMd5());
+                logger.info("SeckillExecution={}", seckillExecution);
+            } catch (RepeatKillException | SeckillCloseException e) {
+                logger.error(e.getMessage());
+            }
+        } else {
+            logger.warn("Exposer={}", exposer);
+        }
+    }
+
+    @Test
+    public void executeSeckillProcedure() {
+        long seckillId = 1007;
+        long phone = Util.getPhoneNum();
+        Exposer exposer = seckillService.exportSeckillUrl(seckillId);
+        if (exposer.isExposed()){
+            try {
+                SeckillExecution seckillExecution = seckillService.executeSeckillProcedure(seckillId, phone, exposer.getMd5());
                 logger.info("SeckillExecution={}", seckillExecution);
             } catch (RepeatKillException | SeckillCloseException e) {
                 logger.error(e.getMessage());
