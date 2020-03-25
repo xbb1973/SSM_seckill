@@ -167,11 +167,20 @@
     </dependency>
 
     <!--prostuff序列化依赖-->
+
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.2</version>
     </dependency>
+
+    <!--使用lombok简化POJO-->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.12</version>
+    </dependency>
+
   </dependencies>
 
   <build>

@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 //告诉junit spring的配置文件
 @ContextConfiguration({"classpath:spring/spring-dao.xml"})
-
 public class ISeckillDaoTest {
     //注入Dao实现类依赖
     @Resource
